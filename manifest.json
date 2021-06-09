@@ -1,0 +1,17 @@
+{
+
+  "manifest_version": 2,
+  "name": "TST new child tab button",
+  "version": "1.0",
+
+  "description": "Adds a button in each tab to open a new child. For use with TST extension",
+
+  "icons": {
+    "48": "icons/icon-48.png"
+  },
+
+  "background": {
+    "scripts": ["script.js"]
+  }
+
+}

@@ -4,9 +4,43 @@ const ADDON_ID = 'tst-new-child-tab-button';
 
 // ugly divs for vertically centered img
 // image as data because I couldn't add it otherwise (its the icon-16.png from the icons folder)
-const ICON = `<div style="height:100%;display: table;"><div style="display: table-cell;vertical-align: middle;">
-<img id="${ADDON_ID}" style="margin-left: auto; margin-right: auto;" src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TtUWqInYQcchQnSyIijhKFYtgobQVWnUwufRDaNKQpLg4Cq4FBz8Wqw4uzro6uAqC4AeIm5uToouU+L+k0CLGg+N+vLv3uHsHCPUyU82OcUDVLCMVj4nZ3IoYeEUXguhHLyISM/VEeiEDz/F1Dx9f76I8y/vcn6NHyZsM8InEs0w3LOJ14ulNS+e8TxxmJUkhPiceM+iCxI9cl11+41x0WOCZYSOTmiMOE4vFNpbbmJUMlXiKOKKoGuULWZcVzluc1XKVNe/JXxjKa8tprtMcRhyLSCAJETKq2EAZFqK0aqSYSNF+zMM/5PiT5JLJtQFGjnlUoEJy/OB/8LtbszA54SaFYkDni21/jACBXaBRs+3vY9tunAD+Z+BKa/krdWDmk/RaS4scAX3bwMV1S5P3gMsdYPBJlwzJkfw0hUIBeD+jb8oBA7dA96rbW3Mfpw9AhrpaugEODoHRImWvebw72N7bv2ea/f0AVwRynEhfJJIAAAAGYktHRAArACoAM8VYB0oAAAAJcEhZcwAALiMAAC4jAXilP3YAAAAHdElNRQflBggSIhxsuJCvAAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAAAGNJREFUOMtj1NYy/s9AAWBctXIdRQawMDAwMDQ2tpKlub6+moGJgUIw8AZQHIiM2KKxvr6aqIAlKRDnzJ1BmzBgIcVmGDslOYN4A2CK58ydgaKR/ukAm+14vVBfX01+OiAFAAAFqR+rcHgIggAAAABJRU5ErkJggg=='/>
+const ICON = `<div style="height:100%; width: 17px; display: table;"><div style="display: table-cell;vertical-align: middle;">
+<img part="${ADDON_ID}" style="margin-left: auto; margin-right: auto;" src='moz-extension://${location.host}/icons/newtab-child.svg'/>
 </div></div>
+`;
+
+// ugly style to make space for the items
+const STYLE = `
+
+::part(${ADDON_ID}):hover {
+    background: rgba(255, 255, 255, 0.1);
+	box-shadow: 0 0 0.1em rgba(255, 255, 255, 0.3);
+}
+
+tab-item:not([data-child-ids]) tab-label, tab-item:not(.subtree-collapsed) tab-label
+{
+	margin-right: 18px
+}
+tab-item:not(.collapsed).sound-playing tab-label,
+tab-item:not(.collapsed).has-sound-playing-member.subtree-collapsed[data-child-ids] tab-label,
+tab-item:not(.collapsed).muted tab-label,
+tab-item:not(.collapsed).has-muted-member.subtree-collapsed[data-child-ids] tab-label
+{
+	margin-right: 0px
+}
+
+tab-sound-button, tab-counter {
+	margin-right: 20px
+}
+tab-item:not(.collapsed).sound-playing tab-counter,
+tab-item:not(.collapsed).has-sound-playing-member.subtree-collapsed[data-child-ids] tab-counter,
+tab-item:not(.collapsed).muted tab-counter,
+tab-item:not(.collapsed).has-muted-member.subtree-collapsed[data-child-ids] tab-counter
+{
+	margin-right: 0px
+}
+
+
 `;
 
 
@@ -42,7 +76,8 @@ async function registerToTST() {
     await browser.runtime.sendMessage(TST_ID, {
       type: 'register-self',
       name: 'TST new child tab button',
-      listeningTypes: ['sidebar-show', 'tab-mousedown', 'tab-dblclicked']
+      listeningTypes: ['sidebar-show', 'tab-mousedown', 'tab-dblclicked'],
+	  style: STYLE
     });
   }
   catch(e) {
